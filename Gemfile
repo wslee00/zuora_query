@@ -7,7 +7,6 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -18,9 +17,42 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem "therubyracer"
+	gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+  gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+end
+
+group :development do
+	# Debugging Tools
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+  gem 'pry'
+  gem 'pry-remote'
 end
 
 gem 'jquery-rails'
+
+# Thin web server
+gem 'thin', '~> 1.5.0'
+
+# Paperclip - attachment handling
+gem 'paperclip', '~> 3.4.0'
+
+# FirePoll
+gem 'fire_poll', '~> 1.2.0'
+
+# ActiveRecord Import
+gem 'activerecord-import', '~> 0.3.0'
+
+# Gyoku - converts Ruby Hashes to XML
+gem 'gyoku', '~> 1.0.0'
+
+# Savon - SOAP client
+gem 'savon', '~> 2.0.3'
+
+# RubyZip
+gem 'rubyzip', '~> 0.9.9'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

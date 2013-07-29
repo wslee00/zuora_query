@@ -15,8 +15,8 @@ module Zuora
 
   class Client
 
-    ZUORA_API_VERSION = "40.0"
-    ZUORA_WSDL_LOCATION = "../zuora-40.0-production-AllOptions.wsdl"
+    ZUORA_API_VERSION = "48.0"
+    ZUORA_WSDL_LOCATION = "../zuora-48.0-production-AllOptions.wsdl"
 
     attr_accessor :query_batch_size
 
@@ -98,6 +98,9 @@ module Zuora
         poll_started = true
         poll_zoql = "SELECT Id, FileId, Status, StatusReason FROM Export WHERE Id = '#{export_create_results.first.id}'"
         poll_zoql_result = query(poll_zoql)
+        if (poll_zoql_result.size == 0) 
+          result = query(export_zoql) # this should raise an error
+        end
         export_zobject = poll_zoql_result.records.first
         puts "********* CURRENT EXPORT STATUS: #{export_zobject.status}"
         export_zobject.status.end_with? "ed"
@@ -160,6 +163,9 @@ module Zuora
     def query(query_string, query_batch_size = @query_batch_size)
       login
       response = @client.call(:query, message: { query_string: query_string } )
+
+      puts "******* #{response}"
+
       QueryResult.new(response)
     end
 

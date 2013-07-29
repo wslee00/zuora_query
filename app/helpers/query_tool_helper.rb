@@ -1,0 +1,2 @@
+module QueryToolHelper
+end

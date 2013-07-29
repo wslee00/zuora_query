@@ -1,0 +1,27 @@
+<h4>Query Editor</h4>
+<%= form_tag 'query' do %>
+	<%= text_area_tag :query, @user_query, rows: 10, class: 'span9' %>
+	<div class="form-actions">
+		<%= button_tag "Query", type: 'submit', class: 'btn btn-primary' %>
+	</div>
+<% end %>
+
+<% if !@result_path.blank? %>
+	<hr/>
+
+	<table class="table table-striped table-condensed table-bordered">
+		<%= CSV.foreach(@result_path, headers: true, return_headers: true ) do |data| %>
+			<tr>
+				<% if data.header_row? %>
+					<% data.each do |key, value| %>
+						<th><%= key %></th>
+					<% end %>
+				<% else %>
+					<% data.each do |key, value| %>
+						<td><%= value %></td>
+					<% end %>
+				<% end %>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
