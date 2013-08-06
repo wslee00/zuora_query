@@ -1,0 +1,21 @@
+%h4 Query Editor
+
+= form_tag 'query', remote: true do 
+	.well
+		= label_tag :username 
+		= text_field_tag :username, @username
+		%br
+		= label_tag :password 
+		= password_field_tag :password, @password 
+		%br
+		= label_tag :zuora_url 
+		https://
+		= text_field_tag :zuora_url, @zuora_url
+
+	= text_area_tag :query_editor, @user_query, rows: 10, class: 'span9' 
+	= text_field_tag :selected_query, nil, style: 'display:none'
+	.form-actions
+		= button_tag "Query", type: 'submit', class: 'btn btn-primary', id: 'query-btn'
+		= image_tag "spinnerLarge.gif", size: "20x20", id: 'loading-indicator'
+
+#results

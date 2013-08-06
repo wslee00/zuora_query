@@ -31,6 +31,7 @@ group :development do
   gem 'pry-remote'
 end
 
+gem "haml-rails"
 gem 'jquery-rails'
 
 # Thin web server

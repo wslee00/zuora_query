@@ -1,0 +1,15 @@
+%i= @user_query
+
+- if @data_rows && !@data_rows.empty?
+  %hr
+  %table.results-grid
+    %tr 
+      - @header_row.each do |key, value|
+        %th= key 
+
+    - @data_rows.each do |data|
+      %tr 
+        - data.each do |key, value|
+          %td= value 
+
+%p= "#{@data_rows.size} row(s) returned" if @data_rows

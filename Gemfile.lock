@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
-  revision: 3ebe7b161a7699e56431d546aa98034483a3bb3c
+  revision: 184e371a06ae881ff685b1320cfced00c5e5f9ae
   specs:
     twitter-bootstrap-rails (2.2.7)
       actionpack (>= 3.1)
@@ -74,6 +74,12 @@ GEM
     fire_poll (1.2.0)
     gyoku (1.0.0)
       builder (>= 2.1.2)
+    haml (3.1.8)
+    haml-rails (0.3.5)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (~> 3.1)
+      railties (>= 3.1, < 4.1)
     hike (1.2.3)
     httpi (2.0.2)
       rack
@@ -194,6 +200,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   fire_poll (~> 1.2.0)
   gyoku (~> 1.0.0)
+  haml-rails
   jquery-rails
   less-rails
   meta_request
