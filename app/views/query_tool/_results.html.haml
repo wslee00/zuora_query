@@ -1,14 +1,18 @@
 %i= @user_query
+%p.text-error= @error_message 
 
 - if @data_rows && !@data_rows.empty?
   %hr
   %table.results-grid
     %tr 
+      %th #
       - @header_row.each do |key, value|
         %th= key 
 
+    - i = 0
     - @data_rows.each do |data|
       %tr 
+        %td= i += 1
         - data.each do |key, value|
           %td= value 
 

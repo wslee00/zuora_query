@@ -1,4 +1,6 @@
 ZuoraQuery::Application.routes.draw do
+  resources :connectors
+
   root :to => 'query_tool#view'
 
   get "query_tool/view"

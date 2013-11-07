@@ -2,6 +2,7 @@
 
 = form_tag 'query', remote: true do 
 	.well
+		= select_tag :connector_id, options_from_collection_for_select(Connector.all, "id", :username)
 		= label_tag :username 
 		= text_field_tag :username, @username
 		%br
@@ -13,9 +14,9 @@
 		= text_field_tag :zuora_url, @zuora_url
 
 	= text_area_tag :query_editor, @user_query, rows: 10, class: 'span9' 
-	= text_field_tag :selected_query, nil, style: 'display:none'
+	= text_area_tag :selected_query, nil, style: 'display:none'
 	.form-actions
-		= button_tag "Query", type: 'submit', class: 'btn btn-primary', id: 'query-btn'
+		/ = button_tag "Query", type: 'submit', class: 'btn btn-primary', id: 'query-btn'
 		= image_tag "spinnerLarge.gif", size: "20x20", id: 'loading-indicator'
 
 #results

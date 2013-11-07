@@ -38,10 +38,15 @@
   </head>
   <body>
 
-  	<%= nav_bar :brand => "Zuora Query Tool" %>
+  	<%= nav_bar :brand => "Zuora Query Tool" do %>
+      <% menu_group do %>
+          <%= menu_item "Query", root_path %>
+          <%= menu_item "Connectors", connectors_path %>
+      <% end %>
+    <% end %>
 
-  	<div class="container">
-      <div class="row">
+  	<div class="container-fluid">
+      <div class="row-fluid">
         <div class="span9">
           <%= bootstrap_flash %>
       		<%= yield %>
@@ -56,25 +61,12 @@
                   'http://knowledgecenter.zuora.com/D_Zuora_APIs/SOAP_API/C_SOAP_API_Reference/H_Export_ZOQL',
                   target: '_new' %>
               <li class="nav-header">Data Sources</li>
-              <li>
-                <%= link_to "Account",
-                  'http://knowledgecenter.zuora.com/C_Zuora_User_Guides/A_Billing_and_Payments/T_Reporting/D_Data_Source_Exports/Account_Data_Source',
-                  target: '_new' %>
-              <li>
-                <%= link_to "Invoice",
-                  'http://knowledgecenter.zuora.com/C_Zuora_User_Guides/A_Billing_and_Payments/T_Reporting/D_Data_Source_Exports/Invoice_Data_Source',
-                  target: '_new' %>
-              </li>
-              <li>
-                <%= link_to "Invoice Item",
-                  'http://knowledgecenter.zuora.com/C_Zuora_User_Guides/A_Billing_and_Payments/T_Reporting/D_Data_Source_Exports/Invoice_Item_Data_Source',
-                  target: '_new' %>
-              </li>
-              <li>
-                <%= link_to "Product Rate Plan Charge",
-                  'http://knowledgecenter.zuora.com/C_Zuora_User_Guides/A_Billing_and_Payments/T_Reporting/D_Data_Source_Exports/Product_Rate_Plan_Charge_Data_Source',
-                  target: '_new' %>
-              </li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Account' %></li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Invoice' %> </li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Invoice_Item' %> </li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Payment' %> </li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Product_Rate_Plan_Charge' %> </li>
+              <li> <%= render "layouts/zuora_object_links", zobject: 'Refund' %> </li>
             </ul>
           </div>
         </div>

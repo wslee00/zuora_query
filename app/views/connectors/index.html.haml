@@ -1,0 +1,13 @@
+%h2 Connector List
+%table.table
+  %tr
+    %th Type
+    %th Username
+    %th URL
+  - @connectors.each do |conn|
+    %tr
+      %td= link_to conn.connector_type, edit_connector_path(conn)
+      %td= link_to conn.username, edit_connector_path(conn)
+      %td= link_to conn.url, edit_connector_path(conn)
+
+= link_to "Add a Connector", new_connector_path
