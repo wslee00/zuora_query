@@ -1,19 +1,29 @@
-%i= @user_query
-%p.text-error= @error_message 
+%ul.nav.nav-tabs
+  - @query_results.each do |qresult|
+    %li{ class: ("active" if qresult == @query_results.first) }
+      %a{ href: "#query-result-#{qresult.id}", data: { toggle: "tab" } }
+        = "Query #{qresult.id}"
 
-- if @data_rows && !@data_rows.empty?
-  %hr
-  %table.results-grid
-    %tr 
-      %th #
-      - @header_row.each do |key, value|
-        %th= key 
+.tab-content
+  - @query_results.each do |qresult|
+    .tab-pane.fade{ class: ("active in" if qresult == @query_results.first), id: "query-result-#{qresult.id}" }
+      %i= qresult.query
+      %p.text-error= @error_message 
+      %p= "#{qresult.data_rows.size} row(s) returned" if qresult.data_rows
 
-    - i = 0
-    - @data_rows.each do |data|
-      %tr 
-        %td= i += 1
-        - data.each do |key, value|
-          %td= value 
+      - if qresult.data_rows && !qresult.data_rows.empty?
+        %hr
+        %table.results-grid
+          %tr 
+            %th #
+            - qresult.header_row.each do |key, value|
+              %th= key 
 
-%p= "#{@data_rows.size} row(s) returned" if @data_rows
+          - i = 0
+          - qresult.data_rows.each do |data|
+            %tr 
+              %td= i += 1
+              - data.each do |key, value|
+                %td= value 
+
+      %p= "#{qresult.data_rows.size} row(s) returned" if qresult.data_rows

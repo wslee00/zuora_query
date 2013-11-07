@@ -3,20 +3,19 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $(document).ready ->
-  $('#loading-indicator').hide()
+  $('.loading-indicator').hide()
+
+  $('#connector_id').change (event) ->
+    $("#chosen_connector").text($(this).val())
+    window.location.href = "?connector_id=" + $(this).val()
 
   $('#query_editor').keydown (event) -> 
     if ((event.which == 115 && event.ctrlKey) || (event.which == 13 && event.metaKey)) 
-      $('#loading-indicator').show()
+      $('.loading-indicator').show()
       $('#selected_query').val($('#query_editor').getSelectedText())
       $('#results').html('Getting results...')      
       $(this).parent('form').submit()
       event.preventDefault()
 
-  $('#query-btn').click ->
-    $('#loading-indicator').show()
-    $('#selected_query').val($('#query_editor').getSelectedText())
-    $('#results').html('Getting results...')
-
   $(document).ajaxStop ->
-    $('#loading-indicator').hide()
+    $('.loading-indicator').hide()

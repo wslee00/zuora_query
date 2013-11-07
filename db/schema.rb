@@ -11,16 +11,35 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812211317) do
+ActiveRecord::Schema.define(:version => 20131107041636) do
 
   create_table "connectors", :force => true do |t|
     t.string   "username"
     t.string   "password"
     t.string   "url"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "connector_type"
     t.string   "name"
+    t.integer  "num_limit"
+    t.string   "order_by_field"
+    t.string   "order_by_direction"
+    t.text     "editor_state"
+  end
+
+  create_table "query_results", :force => true do |t|
+    t.integer  "connector_id"
+    t.text     "query"
+    t.text     "header_row"
+    t.text     "data_rows"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "query_tool_states", :force => true do |t|
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "last_connector_id"
   end
 
 end
