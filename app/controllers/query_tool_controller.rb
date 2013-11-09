@@ -7,6 +7,7 @@ class QueryToolController < ApplicationController
     @connector_id = params[:connector_id] || @connectors.first.id
 
     @current_connector = Connector.find(@connector_id)
+    get_query_results_for_display(@current_connector)
   end
 
   def query
@@ -21,7 +22,11 @@ class QueryToolController < ApplicationController
       @user_query = get_user_query
 
     	file = Tempfile.new("user_query")
-	    connection.export(@user_query, file)
+      begin
+  	    connection.export(@user_query, file)
+      rescue => e
+        @error_message = e.message
+      end
 
       @header_row = nil
       @data_rows = []
@@ -33,9 +38,10 @@ class QueryToolController < ApplicationController
           @data_rows.push(data.to_hash)
         end
       end
+      puts "****** after foreach"
 
       save_query_results(connector)
-      @query_results = connector.query_results.order("created_at DESC").limit(5)
+      get_query_results_for_display(connector)
 
       respond_to do |format|
         format.html { render action: 'view' }
@@ -53,8 +59,9 @@ class QueryToolController < ApplicationController
   def get_connection(connector)
     connector or raise "Connector not specified"
 
-    return Zuora::Client.new(connector.username, connector.password, 
+    client = Zuora::Client.new(connector.username, connector.password, 
       "https://#{connector.url}")
+    client
   end
 
   def save_state(connector)
@@ -77,6 +84,7 @@ class QueryToolController < ApplicationController
         end
       end
 
+      params[:num_limit] = 200 if params[:num_limit].blank?
       user_query += " limit #{params[:num_limit]}"
     end
 
@@ -90,6 +98,11 @@ class QueryToolController < ApplicationController
     if connector.query_results.size > 100
       connector.query_results.order(:created_at).limit(1).destroy
     end
+  end
+
+  def get_query_results_for_display(connector)
+    @query_results = connector.query_results.order("created_at DESC").limit(10)
+
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131107041636) do
+ActiveRecord::Schema.define(:version => 20131109043907) do
 
   create_table "connectors", :force => true do |t|
     t.string   "username"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20131107041636) do
     t.string   "order_by_field"
     t.string   "order_by_direction"
     t.text     "editor_state"
+    t.string   "key"
   end
 
   create_table "query_results", :force => true do |t|

@@ -13,7 +13,7 @@ $(document).ready ->
     if ((event.which == 115 && event.ctrlKey) || (event.which == 13 && event.metaKey)) 
       $('.loading-indicator').show()
       $('#selected_query').val($('#query_editor').getSelectedText())
-      $('#results').html('Getting results...')      
+      $('#results').prepend('Getting results...')      
       $(this).parent('form').submit()
       event.preventDefault()
 

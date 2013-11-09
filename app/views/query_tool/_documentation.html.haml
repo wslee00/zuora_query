@@ -1,0 +1,20 @@
+.well.sidebar-nav
+  %ul.nav.nav-list
+    %li.nav-header General Documentation
+    %li
+      = link_to "Export ZOQL Documentation",                                                         |
+        'http://knowledgecenter.zuora.com/D_Zuora_APIs/SOAP_API/C_SOAP_API_Reference/H_Export_ZOQL', |
+        target: '_new'                                                                               |
+    %li.nav-header Data Sources
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Account'
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Invoice'
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Invoice_Item'
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Payment'
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Product_Rate_Plan_Charge'
+    %li
+      = render "layouts/zuora_object_links", zobject: 'Refund'

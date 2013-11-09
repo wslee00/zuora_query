@@ -18,7 +18,7 @@ module Zuora
     ZUORA_API_VERSION = "48.0"
     ZUORA_WSDL_LOCATION = "../zuora-48.0-production-AllOptions.wsdl"
 
-    attr_accessor :query_batch_size
+    attr_accessor :query_batch_size, :show_logs
 
     def initialize(username, password, endpoint_base)
       @query_batch_size = 100
@@ -29,7 +29,6 @@ module Zuora
     end
     
     def amend(amend_request)
-      login
       amend_response = @client.call(:amend, message: amend_request.to_xml)
       amend_results = Array.wrap(amend_response.to_hash[:amend_response][:results])
       results = []
@@ -40,7 +39,6 @@ module Zuora
     end
 
     def create(zobjects, type_name) 
-      login
       zobjects_xml = build_zobjects_xml(zobjects, type_name)
       save_response = @client.call(:create, message: zobjects_xml)
       save_results = Array.wrap(save_response.to_hash[:create_response][:result])
@@ -52,7 +50,6 @@ module Zuora
     end
     
     def delete(ids, type_name)
-      login
       delete_response = @client.call(:delete, message: { :type => type_name, :ids => Array.wrap(ids) })
       delete_results = Array.wrap(delete_response.to_hash[:delete_response][:result])
       results = []
@@ -89,7 +86,11 @@ module Zuora
       
       # Create Export record
       export_create_results = create([ export_zobject ], "Export")
-      puts "********* EXPORT CREATE RESULT: #{export_create_results.inspect}"
+      logger "********* EXPORT CREATE RESULT: #{export_create_results.inspect}"
+      logger "********* #{export_create_results}"
+      unless export_create_results.first.success
+        raise "Error in zoql: #{export_create_results.first.errors.first.message}"
+      end
       
       # Poll Zuora until CSV is ready for download
       poll_started = false
@@ -98,16 +99,17 @@ module Zuora
         poll_started = true
         poll_zoql = "SELECT Id, FileId, Status, StatusReason FROM Export WHERE Id = '#{export_create_results.first.id}'"
         poll_zoql_result = query(poll_zoql)
+
         if (poll_zoql_result.size == 0) 
           result = query(export_zoql) # this should raise an error
         end
         export_zobject = poll_zoql_result.records.first
-        puts "********* CURRENT EXPORT STATUS: #{export_zobject.status}"
+        logger "********* CURRENT EXPORT STATUS: #{export_zobject.status}"
         export_zobject.status.end_with? "ed"
       end
       
       # Check status and if complete, output file to destination IO
-      puts "********* FINAL EXPORT STATUS: #{export_zobject.status}"
+      logger "********* FINAL EXPORT STATUS: #{export_zobject.status}"
       case export_zobject.status
         when "Completed"
           get_file(export_zobject.file_id, destination_io)
@@ -159,24 +161,33 @@ module Zuora
       nil
       
     end
+
+    def login
+      @client = Savon.client(endpoint: "#{@endpoint_base}/apps/services/a/#{ZUORA_API_VERSION}", 
+          wsdl: File.expand_path(ZUORA_WSDL_LOCATION, __FILE__), filters: [ :password, :session, "Session" ])
+      response = @client.call(:login, message: { username: @username, password: @password })
+      result = LoginResult.new(response.body)
+      @session = result.session
+      @endpoint = result.server_url
+      @client = Savon.client(endpoint: @endpoint, wsdl: File.expand_path(ZUORA_WSDL_LOCATION, __FILE__), filters: [ :password, :session ],
+          soap_header: { "SessionHeader" => { :session => session }, "QueryOptions" => { :batch_size => query_batch_size } })
+      result
+    end
     
     def query(query_string, query_batch_size = @query_batch_size)
-      login
       response = @client.call(:query, message: { query_string: query_string } )
 
-      puts "******* #{response}"
+      logger "******* #{response}"
 
       QueryResult.new(response)
     end
 
     def query_more(query_locator, query_batch_size = @query_batch_size)
-      login
       response = @client.call(:query_more, message: { query_locator: query_locator })
       QueryResult.new(response)
     end
 
     def update(zobjects, type_name)
-      login
       zobjects_xml = build_zobjects_xml(zobjects, type_name)
       save_response = @client.call(:update, message: zobjects_xml)
       save_results = Array.wrap(save_response.to_hash[:update_response][:result])
@@ -200,18 +211,16 @@ module Zuora
       zobjects_xml
     end
     
-    def login
-      @client = Savon.client(endpoint: "#{@endpoint_base}/apps/services/a/#{ZUORA_API_VERSION}", 
-          wsdl: File.expand_path(ZUORA_WSDL_LOCATION, __FILE__), filters: [ :password, :session, "Session" ])
-      response = @client.call(:login, message: { username: @username, password: @password })
-      result = LoginResult.new(response.body)
-      @session = result.session
-      @endpoint = result.server_url
-      @client = Savon.client(endpoint: @endpoint, wsdl: File.expand_path(ZUORA_WSDL_LOCATION, __FILE__), filters: [ :password, :session ],
-          soap_header: { "SessionHeader" => { :session => session }, "QueryOptions" => { :batch_size => query_batch_size } })
-      result
+    
+
+    private 
+
+    def logger(message)
+      puts message if @show_logs
     end
 
   end
+
+  
 
 end

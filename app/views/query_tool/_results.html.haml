@@ -1,14 +1,14 @@
+%p.text-error= @error_message 
 %ul.nav.nav-tabs
   - @query_results.each do |qresult|
     %li{ class: ("active" if qresult == @query_results.first) }
       %a{ href: "#query-result-#{qresult.id}", data: { toggle: "tab" } }
-        = "Query #{qresult.id}"
+        = "Query #{qresult.id % 100}"
 
 .tab-content
   - @query_results.each do |qresult|
     .tab-pane.fade{ class: ("active in" if qresult == @query_results.first), id: "query-result-#{qresult.id}" }
       %i= qresult.query
-      %p.text-error= @error_message 
       %p= "#{qresult.data_rows.size} row(s) returned" if qresult.data_rows
 
       - if qresult.data_rows && !qresult.data_rows.empty?

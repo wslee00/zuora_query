@@ -1,0 +1,30 @@
+= form_tag 'query', remote: true, class: "form-horizontal" do 
+  .well
+    .control-group
+      %label.control-label
+        Connector
+      .controls
+        = select_tag :connector_id, options_from_collection_for_select(@connectors, "id", :username, @current_connector.id) 
+
+    .control-group
+      %label.control-label
+        Order By Field
+      .controls
+        = text_field_tag :order_by_field, @current_connector.order_by_field
+
+    .control-group
+      %label.control-label
+        Order By Direction
+      .controls
+        = select_tag :order_by_direction, options_for_select([["",""],["ASC", "ASC"],["DESC", "DESC"]], @current_connector.order_by_direction), class: "input-small"
+
+    .control-group
+      %label.control-label
+        Limit
+      .controls
+        = text_field_tag :num_limit, @current_connector.num_limit
+
+  = text_area_tag :query_editor, @current_connector.editor_state, rows: 10, class: 'input-block-level' 
+  = text_area_tag :selected_query, nil, style: 'display:none'
+
+  .help-block Hit Ctrl-Enter or Cmd-Enter to run query.  Highlight the query that you want to run if you have more than one in the query editor textarea.
