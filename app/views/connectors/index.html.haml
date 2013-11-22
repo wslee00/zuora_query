@@ -1,13 +1,15 @@
-%h2 Connector List
-%table.table
+%h4 Connector List
+%table.table.table-striped
   %tr
     %th Type
     %th Username
     %th URL
+    %th Actions
   - @connectors.each do |conn|
     %tr
       %td= link_to conn.connector_type, edit_connector_path(conn)
       %td= link_to conn.username, edit_connector_path(conn)
       %td= link_to conn.url, edit_connector_path(conn)
+      %td= button_to("Delete", conn, method: :delete, :confirm => "Are you sure?", class: "btn btn-mini btn-danger")
 
 = link_to "Add a Connector", new_connector_path

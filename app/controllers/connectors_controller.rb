@@ -32,6 +32,8 @@ class ConnectorsController < ApplicationController
   end
 
   def destroy
+    Connector.find(params[:id]).delete
+    redirect_to connectors_path
   end
 
 

@@ -27,10 +27,15 @@
     = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
     = javascript_include_tag "application"
   %body
-    = nav_bar :brand => "Zuora Query Tool" do
-      - menu_group do
+    = nav_bar do
+      %span.pull-left= image_tag "zuora-logo.jpg", size: "90x10"
+      %a{ href: root_path, class: "brand" }
+        &nbsp;Query Tool
+      = menu_group do
         = menu_item "Query", root_path
         = menu_item "Connectors", connectors_path
+
+
     .container-fluid
       .row-fluid
         .span12

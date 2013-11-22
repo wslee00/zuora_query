@@ -15,7 +15,7 @@ module Zuora
 
   class Client
 
-    ZUORA_API_VERSION = "48.0"
+    ZUORA_API_VERSION = "50.0"
     ZUORA_WSDL_LOCATION = "../zuora-48.0-production-AllOptions.wsdl"
 
     attr_accessor :query_batch_size, :show_logs
