@@ -3,10 +3,12 @@ require 'csv'
 class QueryToolController < ApplicationController
   def index
     @connectors = Connector.all
-    @connector_id = params[:connector_id] || @connectors.first.id
+    if @connectors.first
+      @connector_id = params[:connector_id] || @connectors.first.id
 
-    @current_connector = Connector.find(@connector_id)
-    get_query_results_for_display(@current_connector)
+      @current_connector = Connector.find(@connector_id)
+      get_query_results_for_display(@current_connector)
+    end
   end
 
   def query
@@ -67,7 +69,10 @@ class QueryToolController < ApplicationController
       num_limit: params[:num_limit],
       order_by_field: params[:order_by_field],
       order_by_direction: params[:order_by_direction])
-    QueryToolState.first.update_attributes(last_connector_id: params[:connector_id])
+
+    if QueryToolState.first
+      QueryToolState.first.update_attributes(last_connector_id: params[:connector_id])
+    end
   end
 
   def get_user_query

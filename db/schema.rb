@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20131109043907) do
     t.datetime "updated_at",         :null => false
     t.string   "connector_type"
     t.string   "name"
+    t.text     "window_state"
     t.integer  "num_limit"
     t.string   "order_by_field"
     t.string   "order_by_direction"
