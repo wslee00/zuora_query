@@ -3,11 +3,9 @@
 one:
   username: MyString
   password: MyString
-  type: 
   url: MyString
 
 two:
   username: MyString
   password: MyString
-  type: 
   url: MyString

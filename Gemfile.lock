@@ -10,6 +10,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: https://vf2t6s2zJ3CrRzbf3x6x@gem.fury.io/djmassad/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
@@ -42,9 +43,9 @@ GEM
       i18n (= 0.6.1)
       multi_json (~> 1.0)
     aes (0.5.0)
-    akami (1.2.0)
+    akami (1.2.1)
       gyoku (>= 0.4.0)
-      nokogiri (>= 1.4.0)
+      nokogiri
     arel (3.0.2)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
@@ -73,7 +74,7 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fire_poll (1.2.0)
-    gyoku (1.0.0)
+    gyoku (1.1.1)
       builder (>= 2.1.2)
     haml (3.1.8)
     haml-rails (0.3.5)
@@ -81,9 +82,11 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
+    hashie (2.0.5)
     hike (1.2.3)
-    httpi (2.0.2)
+    httpi (2.1.0)
       rack
+      rubyntlm (~> 0.3.2)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (3.0.4)
@@ -105,9 +108,11 @@ GEM
       railties
     method_source (0.8.1)
     mime-types (1.23)
+    mini_portile (0.5.3)
     multi_json (1.7.7)
-    nokogiri (1.5.9)
-    nori (2.0.4)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
+    nori (2.3.0)
     paperclip (3.4.2)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
@@ -139,6 +144,11 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.2)
+    rails_stdout_logging (0.0.3)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -150,20 +160,21 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.4)
+    rubyntlm (0.3.4)
     rubyzip (0.9.9)
     sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    savon (2.0.3)
+    savon (2.3.3)
       akami (~> 1.2.0)
       builder (>= 2.1.2)
-      gyoku (~> 1.0.0)
-      httpi (~> 2.0.0)
+      gyoku (~> 1.1.0)
+      httpi (~> 2.1.0)
       nokogiri (>= 1.4.0)
-      nori (~> 2.0.3)
-      wasabi (~> 3.0.0)
+      nori (~> 2.3.0)
+      wasabi (~> 3.2.2)
     slop (3.4.5)
     sprockets (2.2.2)
       hike (~> 1.2)
@@ -187,9 +198,17 @@ GEM
     uglifier (2.1.2)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    wasabi (3.0.0)
+    wasabi (3.2.3)
       httpi (~> 2.0)
+      mime-types (< 2.0.0)
       nokogiri (>= 1.4.0)
+    zuora_ruby_client (0.0.1)
+      activesupport
+      builder
+      fire_poll (~> 1.2.0)
+      hashie (~> 2.0.5)
+      nori (~> 2.3.0)
+      savon (~> 2.3.3)
 
 PLATFORMS
   ruby
@@ -201,7 +220,7 @@ DEPENDENCIES
   binding_of_caller
   coffee-rails (~> 3.2.1)
   fire_poll (~> 1.2.0)
-  gyoku (~> 1.0.0)
+  gyoku (~> 1.1.0)
   haml-rails
   jquery-rails
   less-rails
@@ -210,11 +229,13 @@ DEPENDENCIES
   pry
   pry-remote
   rails (= 3.2.13)
+  rails_12factor
   rubyzip (~> 0.9.9)
   sass-rails (~> 3.2.3)
-  savon (~> 2.0.3)
+  savon (~> 2.3.3)
   sqlite3
   therubyracer
   thin (~> 1.5.0)
   twitter-bootstrap-rails!
   uglifier (>= 1.0.3)
+  zuora_ruby_client

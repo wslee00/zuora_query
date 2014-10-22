@@ -1,4 +1,3 @@
-require 'zuora'
 require 'csv'
 
 class QueryToolController < ApplicationController
@@ -12,46 +11,45 @@ class QueryToolController < ApplicationController
 
   def query
 
-    begin 
-      connector = Connector.find(params[:connector_id])
-      connection = get_connection(connector)
+    connector = Connector.find(params[:connector_id])
+    connection = get_connection(connector)
 
-      save_state(connector)
-      connector.reload
+    save_state(connector)
+    connector.reload
 
-      @user_query = get_user_query
+    @user_query = get_user_query
 
-    	file = Tempfile.new("user_query")
-      begin
-  	    connection.export(@user_query, file)
-      rescue => e
-        @error_message = e.message
-      end
-
-      @header_row = nil
-      @data_rows = []
-      @results = { header: @header_row, data: @data_rows }
-      CSV.foreach(file.path, headers: true, return_headers: true ) do |data|
-        if data.header_row? 
-          @header_row = data.to_hash
-        else
-          @data_rows.push(data.to_hash)
-        end
-      end
-      puts "****** after foreach"
-
-      save_query_results(connector)
-      get_query_results_for_display(connector)
-
-      respond_to do |format|
-        format.html { render action: 'view' }
-        format.js { render layout: false }
-        format.json { render json: @results, status: :success }
-      end
+  	file = Tempfile.new("user_query")
+    begin
+	    connection.export(@user_query, file)
     rescue => e
-      flash[:error] = e.message
-      @error_message = e.message + "\n" + e.backtrace.inspect
+      @error_message = e.message
     end
+
+    @header_row = nil
+    @data_rows = []
+    @results = { header: @header_row, data: @data_rows }
+    CSV.foreach(file.path, headers: true, return_headers: true ) do |data|
+      puts "***** #{data.to_hash}"
+      if data.header_row? 
+        @header_row = data.to_hash
+      else
+        @data_rows.push(data.to_hash)
+      end
+    end
+
+    save_query_results(connector)
+    get_query_results_for_display(connector)
+
+    respond_to do |format|
+      format.html { render action: 'view' }
+      format.js { render layout: false }
+      format.json { render json: @results, status: :success }
+    end
+    # rescue => e
+    #   flash[:error] = e.message
+    #   @error_message = e.message + "\n" + e.backtrace.inspect
+    # end
   end
 
   private 
@@ -59,7 +57,7 @@ class QueryToolController < ApplicationController
   def get_connection(connector)
     connector or raise "Connector not specified"
 
-    client = Zuora::Client.new(connector.username, connector.password, 
+    client = ZuoraRubyClient::Client.new(connector.username, connector.password, 
       "https://#{connector.url}")
     client
   end
@@ -96,7 +94,7 @@ class QueryToolController < ApplicationController
       header_row: @header_row, data_rows: @data_rows)
 
     if connector.query_results.size > 100
-      connector.query_results.order(:created_at).limit(1).destroy
+      connector.query_results.order(:created_at).limit(1).first.destroy
     end
   end
 

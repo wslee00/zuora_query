@@ -13,7 +13,7 @@
 
       - if qresult.data_rows && !qresult.data_rows.empty?
         %hr
-        %table.table.table-striped.table-condensed.table-bordered
+        %table.table.table-striped.table-condensed.table-bordered.table-hover
           %tr 
             %th #
             - qresult.header_row.each do |key, value|

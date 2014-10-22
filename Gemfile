@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://vf2t6s2zJ3CrRzbf3x6x@gem.fury.io/djmassad'
 
 gem 'rails', '3.2.13'
 
@@ -31,6 +32,10 @@ group :development do
   gem 'pry-remote'
 end
 
+group :production do
+  gem 'rails_12factor'
+end
+
 gem "aes"
 gem "haml-rails"
 gem 'jquery-rails'
@@ -48,25 +53,16 @@ gem 'fire_poll', '~> 1.2.0'
 gem 'activerecord-import', '~> 0.3.0'
 
 # Gyoku - converts Ruby Hashes to XML
-gem 'gyoku', '~> 1.0.0'
+gem 'gyoku', '~> 1.1.0'
 
 # Savon - SOAP client
-gem 'savon', '~> 2.0.3'
+gem 'savon', '~> 2.3.3'
 
 # RubyZip
 gem 'rubyzip', '~> 0.9.9'
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+# gem 'zuora_ruby_client', git: 'https://wslee000@bitbucket.org/fronteraconsulting/zuora_ruby_client.git'
+gem 'zuora_ruby_client'
 
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
 
-# Use unicorn as the app server
-# gem 'unicorn'
 
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
